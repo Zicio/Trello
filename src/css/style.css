@@ -1,0 +1,21 @@
+html {
+    background-color: #58a6ff;
+}
+
+.content {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(max-content, 1fr));
+    grid-gap: 5px;
+    max-width: 1000px;
+}
+
+.column {
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #dee2e5;
+    color: #435c6a;
+}
+
+.column__add-element {
+    -webkit-appearance: none;
+}
