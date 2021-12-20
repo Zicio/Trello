@@ -4,18 +4,102 @@ html {
 
 .content {
     display: grid;
-    grid-template-columns: repeat(3, minmax(max-content, 1fr));
+    grid-template-columns: repeat(3, minmax(min-content, 1fr));
     grid-gap: 5px;
-    max-width: 1000px;
+    min-width: 800px;
 }
 
 .column {
+    align-self: start;
     border-radius: 5px;
     padding: 10px;
     background-color: #dee2e5;
+}
+
+.column__title {
+    margin-top: 0;
+    text-transform: uppercase;
+    font-family: sans-serif;
+    font-size: medium;
+    font-weight: bold;
     color: #435c6a;
 }
 
+.column__list {
+    list-style: none;
+    padding: 0;
+}
+
+.column__card {
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 5px 20px 5px 5px;
+    border-radius: 5px;
+    color: rgb(67, 92, 106);
+    background-color: white;
+    font-family: sans-serif;
+    position: relative;
+    margin-top: 10px;
+    word-break: break-word;
+}
+
+.card__delete {
+    position: absolute;
+    display: none;
+    right: 5px;
+    top: 5px;
+}
+
+.button {
+    background-color: #dee2e5;
+    color: #435c6a;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    font-family: sans-serif;
+}
+
 .column__add-element {
-    -webkit-appearance: none;
+    font-size: medium;
+}
+
+.form__box {
+    margin-top: 10px;
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+.form__field {
+    box-sizing: border-box;
+    padding: 5px;
+    border-radius: 5px;
+    color: #435c6a;
+    border: none;
+    font: inherit;
+    font-family: sans-serif;
+    height: 70px;
+    width: 100%;
+    resize: none;
+}
+
+.form__button-panel {
+    margin-top: 5px;
+    display: flex;
+}
+
+.form__submit {
+    padding: 5px;
+    border-radius: 3px;
+    color: white;
+    background-color: green;
+
+}
+
+.form__remove {
+    margin-left: 10px;
 }

@@ -1,3 +1,3 @@
 import Logic from './Logic';
 
-const gamePlay = new Logic(document);
+const work = new Logic(document.querySelector('.content'));
