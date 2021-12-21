@@ -31,7 +31,6 @@ html {
 }
 
 .column__card {
-    display: inline-block;
     box-sizing: border-box;
     padding: 5px 20px 5px 5px;
     border-radius: 5px;
@@ -41,6 +40,17 @@ html {
     position: relative;
     margin-top: 10px;
     word-break: break-word;
+}
+
+.column__card_selected {
+    background: lightblue;
+}
+
+.column__card_dragged {
+    border: 1px solid black;
+    position: absolute;
+    z-index: 1000;
+    cursor: grabbing;
 }
 
 .card__delete {
