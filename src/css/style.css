@@ -28,6 +28,8 @@ html {
 .column__list {
     list-style: none;
     padding: 0;
+    margin-bottom: 0;
+    margin-top: 10px;
 }
 
 .column__card {
@@ -43,7 +45,7 @@ html {
 }
 
 .column__card_selected {
-    background: lightblue;
+    opacity: 0;
 }
 
 .column__card_dragged {
@@ -73,6 +75,7 @@ html {
 
 .column__add-element {
     font-size: medium;
+    margin-top: 10px;
 }
 
 .form__box {

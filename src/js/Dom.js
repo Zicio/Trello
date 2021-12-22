@@ -53,7 +53,9 @@ export default class Dom {
 
   static deleteCard(e) {
     const card = e.target.parentNode;
+    const column = e.target.closest('.column');
     const columnList = e.target.closest('.column__list');
+    Dom.deleteData(column, card);
     columnList.removeChild(card);
   }
 
@@ -67,6 +69,14 @@ export default class Dom {
     }
     const arr = [];
     arr.push(newCard.innerText);
+    localStorage.setItem(`${columnName}`, JSON.stringify(arr));
+  }
+
+  static deleteData(column, card) {
+    const columnName = column.classList[1];
+    const arr = JSON.parse(localStorage.getItem(columnName));
+    const indexDataCard = arr.indexOf(card.innerText);
+    arr.splice(indexDataCard, 1);
     localStorage.setItem(`${columnName}`, JSON.stringify(arr));
   }
 }
