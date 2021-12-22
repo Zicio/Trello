@@ -10,7 +10,7 @@ export default class Logic {
     this.listenerOfClickButton();
     this.listenerOfTargetCard();
     this.listenerOfUntargetCard();
-    this.moveControlClass.movingCard();
+    this.moveControlClass.moveDownListener();
   }
 
   static start() {
