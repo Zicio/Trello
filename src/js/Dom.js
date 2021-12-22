@@ -8,14 +8,31 @@ export default class Dom {
         for (const el of savedData) {
           const newCard = document.createElement('li');
           newCard.classList.add('column__card');
-          newCard.textContent = el;
+          const textOfCard = document.createElement('span');
+          textOfCard.textContent = el;
           const cross = document.createElement('button');
           cross.classList.add('button', 'card__delete');
           cross.textContent = '✖';
           list.appendChild(newCard);
+          newCard.appendChild(textOfCard);
           newCard.appendChild(cross);
         }
       }
+    }
+  }
+
+  static saver() {
+    localStorage.clear();
+    const lists = document.getElementsByClassName('column__list');
+    for (const list of [...lists]) {
+      const columnName = list.closest('.column').classList[1];
+      const cards = list.getElementsByClassName('column__card');
+      const savedData = [];
+      for (const card of cards) {
+        const data = card.firstChild.textContent;
+        savedData.push(data);
+      }
+      localStorage.setItem(`${columnName}`, JSON.stringify(savedData));
     }
   }
 
@@ -33,14 +50,16 @@ export default class Dom {
     const list = column.querySelector('.column__list');
     const newCard = document.createElement('li');
     newCard.classList.add('column__card');
-    newCard.textContent = text;
+    const textOfCard = document.createElement('span');
+    textOfCard.textContent = text;
     const cross = document.createElement('button');
     cross.classList.add('button', 'card__delete');
     cross.textContent = '✖';
     list.appendChild(newCard);
+    newCard.appendChild(textOfCard);
     newCard.appendChild(cross);
     Dom.renderAddCardMenu(e);
-    Dom.saveData(column, newCard);
+    Dom.saver();
   }
 
   static renderCross(e) {
@@ -53,30 +72,8 @@ export default class Dom {
 
   static deleteCard(e) {
     const card = e.target.parentNode;
-    const column = e.target.closest('.column');
     const columnList = e.target.closest('.column__list');
-    Dom.deleteData(column, card);
     columnList.removeChild(card);
-  }
-
-  static saveData(column, newCard) {
-    const columnName = column.classList[1];
-    if (localStorage.getItem(columnName)) {
-      const arr = JSON.parse(localStorage.getItem(columnName));
-      arr.push(newCard.innerText);
-      localStorage.setItem(`${columnName}`, JSON.stringify(arr));
-      return;
-    }
-    const arr = [];
-    arr.push(newCard.innerText);
-    localStorage.setItem(`${columnName}`, JSON.stringify(arr));
-  }
-
-  static deleteData(column, card) {
-    const columnName = column.classList[1];
-    const arr = JSON.parse(localStorage.getItem(columnName));
-    const indexDataCard = arr.indexOf(card.innerText);
-    arr.splice(indexDataCard, 1);
-    localStorage.setItem(`${columnName}`, JSON.stringify(arr));
+    Dom.saver();
   }
 }

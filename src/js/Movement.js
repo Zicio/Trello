@@ -42,7 +42,7 @@ export default class Movement {
       this.draggedItem.style.transform = 'rotate(5deg)';
 
       this.element.appendChild(this.draggedItem);
-      Dom.deleteData(column, this.selectedItem);
+      Dom.saver();
     }
   }
 
@@ -95,7 +95,7 @@ export default class Movement {
     }
 
     this.selectedItem.classList.remove('column__card_selected');
-    Dom.saveData(column, this.selectedItem);
+    Dom.saver();
     this.selectedItem = null;
 
     this.draggedItem.remove();

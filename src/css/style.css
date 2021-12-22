@@ -55,6 +55,10 @@ html {
     cursor: grabbing;
 }
 
+.column__card > span {
+    pointer-events: none;
+}
+
 .card__delete {
     position: absolute;
     display: none;
