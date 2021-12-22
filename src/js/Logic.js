@@ -3,6 +3,10 @@ import Dom from './Dom';
 export default class Logic {
   constructor(element) {
     this.element = element;
+    this.draggedItem = null;
+    this.selectedItem = null;
+    this.shiftX = null;
+    this.shiftY = null;
 
     Logic.start();
     this.listenerOfClickButton();
@@ -58,70 +62,74 @@ export default class Logic {
   }
 
   movingCard() {
-    let draggedItem = null;
-    let selectedItem = null;
-    let shiftX = null;
-    let shiftY = null;
-    this.element.addEventListener('mousedown', (e) => {
-      if (e.target.classList.contains('column__card')) {
-        e.preventDefault();
-        const target = e.target.closest('.column__card');
-        selectedItem = target;
-        selectedItem.classList.add('column__card_selected');
+    this.element.addEventListener('mousedown', this.moveDown.bind(this));
 
-        draggedItem = target.cloneNode(true);
-        draggedItem.classList.add('column__card_dragged');
+    this.element.addEventListener('mousemove', this.move.bind(this));
 
-        const width = selectedItem.clientWidth;
-        const height = selectedItem.clientHeight;
+    this.element.addEventListener('mouseup', this.moveUp.bind(this));
+  }
 
-        shiftX = e.clientX - selectedItem.getBoundingClientRect().left;
-        shiftY = e.clientY - selectedItem.getBoundingClientRect().top;
+  moveDown(e) {
+    if (e.target.classList.contains('column__card')) {
+      e.preventDefault();
+      const target = e.target.closest('.column__card');
+      this.selectedItem = target;
+      this.selectedItem.classList.add('column__card_selected');
 
-        draggedItem.style.width = `${width}px`;
-        draggedItem.style.height = `${height}px`;
-        draggedItem.style.top = `${e.pageY - shiftY}px`;
-        draggedItem.style.left = `${e.pageX - shiftX}px`;
-        draggedItem.style.listStyle = 'none';
-        draggedItem.style.transform = 'rotate(5deg)';
+      this.draggedItem = target.cloneNode(true);
+      this.draggedItem.classList.add('column__card_dragged');
 
-        this.element.appendChild(draggedItem);
-      }
-    });
+      const width = this.selectedItem.clientWidth;
+      const height = this.selectedItem.clientHeight;
 
-    this.element.addEventListener('mousemove', (e) => {
-      if (!selectedItem) {
-        return;
-      }
+      this.shiftX = e.clientX - this.selectedItem.getBoundingClientRect().left;
+      this.shiftY = e.clientY - this.selectedItem.getBoundingClientRect().top;
 
-      draggedItem.style.top = `${e.pageY - shiftY}px`;
-      draggedItem.style.left = `${e.pageX - shiftX}px`;
-    });
+      this.draggedItem.style.width = `${width}px`;
+      this.draggedItem.style.height = `${height}px`;
+      this.positionOfDraggedItem(e);
+      this.draggedItem.style.listStyle = 'none';
+      this.draggedItem.style.transform = 'rotate(5deg)';
 
-    this.element.addEventListener('mouseup', (e) => {
-      if (!selectedItem) {
-        return;
-      }
+      this.element.appendChild(this.draggedItem);
+    }
+  }
 
-      const x = e.clientX;
-      const y = e.clientY;
+  positionOfDraggedItem(e) {
+    this.draggedItem.style.top = `${e.pageY - this.shiftY}px`;
+    this.draggedItem.style.left = `${e.pageX - this.shiftX}px`;
+  }
 
-      draggedItem.style.display = 'none';
-      const changingItem = document.elementFromPoint(x, y);
-      const { top } = changingItem.getBoundingClientRect();
-      const parent = changingItem.closest('.column').querySelector('.column__list');
-      if ((e.pageY > window.scrollY + top + changingItem.offsetHeight / 2)
-      && (changingItem.nextElementSibling)) {
-        parent.insertBefore(selectedItem, changingItem.nextElementSibling);
-      } else {
-        parent.insertBefore(selectedItem, changingItem);
-      }
+  move(e) {
+    if (!this.selectedItem) {
+      return;
+    }
+    this.positionOfDraggedItem(e);
+  }
 
-      selectedItem.classList.remove('column__card_selected');
-      selectedItem = null;
+  moveUp(e) {
+    if (!this.selectedItem) {
+      return;
+    }
 
-      draggedItem.remove();
-      draggedItem = null;
-    });
+    const x = e.clientX;
+    const y = e.clientY;
+
+    this.draggedItem.style.display = 'none';
+    const changingItem = document.elementFromPoint(x, y);
+    const { top } = changingItem.getBoundingClientRect();
+    const parent = changingItem.closest('.column').querySelector('.column__list');
+    if ((e.pageY > window.scrollY + top + changingItem.offsetHeight / 2)
+    && (changingItem.nextElementSibling)) {
+      parent.insertBefore(this.selectedItem, changingItem.nextElementSibling);
+    } else {
+      parent.insertBefore(this.selectedItem, changingItem);
+    }
+
+    this.selectedItem.classList.remove('column__card_selected');
+    this.selectedItem = null;
+
+    this.draggedItem.remove();
+    this.draggedItem = null;
   }
 }
